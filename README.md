@@ -6,6 +6,8 @@ A Javascript written tool to generate geometric images like Harmonograph.
 
 This project simulates a harmonograph, one of the various types available. To generate drawings, users can specify their own settings. Users can see a few preset samples that are being emulated. Prior to drawing, they have the ability to alter the inputs of preset designs. The browser will cache the last configuration that was used.
 
+Larger screens provide the greatest experience.
+
 ## Check [Live](https://jamshedhossan9.github.io/harmonograph/)
 
 <p align="center">
