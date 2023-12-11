@@ -332,6 +332,9 @@ input[type="range"]:focus::-moz-range-thumb{
     justify-content: flex-end;
     align-items: center;
 }
+.settings .middle-options-btns{
+    flex-direction: column;
+}
 .setting-color{
     padding: 2px;
     min-height: auto;
@@ -410,6 +413,10 @@ input[type="range"]:focus::-moz-range-thumb{
     }
     .board:not(.show-config) .settings .table{
         display: none;
+    }
+    .board.drawing .settings .middle-options-btns{
+        flex-direction: row;
+        justify-content: center;
     }
     
     .settings>.setting-options{
