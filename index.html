@@ -1,0 +1,785 @@
+<!--
+    "Harmonograph" is a Javascript written project that simulates drawing of a harmonograph. It generates geometric drawings based on inputs.
+    
+    Copyright (C) 2023 - Jamshed Hossan
+
+    This program is free software: you can redistribute it and/or modify it under the terms 
+    of the GNU General Public License as published by the Free Software Foundation, 
+    either version 3 of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+    PURPOSE. See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with this program. 
+    If not, see https://www.gnu.org/licenses/.
+-->
+<html>
+    <title>Harmonograph</title>
+    <link rel="icon" type="image/*" href="./assets/icons/fav.svg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="./assets/bootstrap.min.css">
+	<link rel="stylesheet" href="./assets/style.css">
+    <script src="./assets/bootstrap.bundle.min.js"></script>
+    <script src="./assets/presets.js"></script>
+    <script src="./assets/index.js"></script>
+    
+    <body onload="init()">
+    	<div class="board " id="board">
+    		<canvas class="canvas" id="canvas"></canvas>	
+    		<div class="machine invisible_if_show_drawing_only" id="machine">
+    			<div class="machine-gear-container">
+    				<div class="machine-gear-con machine_gear_0">
+	    				<div class="machine-gear-parent machine_gear_0_parent">
+	    					<div class="machine-gear-child-con machine_gear_0_child_con">
+                                <div class="machine-gear-child machine_gear_0_child">
+                                    <div class="machine_gear_handle_con machine_gear_0_handle_con">
+                                        <div class="machine_gear_handle machine_gear_0_handle">
+                                        </div>	
+                                        
+                                    </div>
+                                </div>
+	    					</div>
+	    				</div>
+    				</div>
+    				<div class="machine-gear-con machine_gear_1">
+	    				<div class="machine-gear-parent machine_gear_1_parent">
+	    					<div class="machine-gear-child-con machine_gear_1_child_con">
+                                <div class="machine-gear-child machine_gear_1_child">
+                                    <div class="machine_gear_handle_con machine_gear_1_handle_con">
+                                        <div class="machine_gear_handle machine_gear_1_handle">
+                                        </div>	
+                                        
+                                    </div>
+                                </div>
+	    					</div>
+	    				</div>
+    				</div>	
+    			</div>
+    		</div>
+            <div class="machine_hand invisible_if_show_drawing_only">
+                <div class="machine_hand_arm machine_hand_arm_0">
+                    <div class="machine_hand_arm_display machine_hand_arm_0_display"></div>
+                    <div class="machine_hand_forearm machine_hand_forearm_0">
+                        <div class="machine_hand_forearm_tip machine_hand_forearm_0_tip"></div>
+                    </div>
+                </div>
+                <div class="machine_hand_arm machine_hand_arm_1">
+                    <div class="machine_hand_arm_display machine_hand_arm_1_display"></div>
+                    <div class="machine_hand_forearm machine_hand_forearm_1">
+                        <div class="machine_hand_forearm_tip machine_hand_forearm_1_tip"></div>
+                    </div>
+                </div>
+                <div class="machine_hand_arm_bridge">
+                    <div class="machine_hand_arm_bridge_column">
+                        <div class="machine_hand_arm_bridge_column_tip"></div>
+                    </div>
+                </div>
+                <div class="machine_hand_palm machine_hand_palm_0"></div>
+                <div class="machine_hand_palm machine_hand_palm_1"></div>
+                <div class="machine_hand_palm_bridge">
+                    <div class="machine_hand_palm_bridge_column">
+                        <div class="machine_hand_palm_bridge_column_tip">
+                            <div class="pen_con">
+                                <div class="machine_hand_pen"></div>
+                                <img class="pen d-none" src="./assets/icons/pencil.svg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings d-flex justify-content-around align-items-end gap-4">
+                <div class="setting-options left-options d-flex flex-column gap-2 flex-grow-1- invisible_when_drawing invisible_if_show_drawing_only">
+                    <table class="table m-0 table-sm table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="setting-label"><strong>Left Motor</strong></div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Direction 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Direction" 
+                                            data-bs-content="The direction of Disk 1 (large) rotation in Left Motor">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center ps-3 py-1">
+                                        <div>
+                                            <label class="form-check-label me-2 text-muted" for="machine_controls_0_dir_parent">Negative</label>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input machine_controls_0_dir_parent" value="1" type="checkbox" id="machine_controls_0_dir_parent">
+                                                <label class="form-check-label ms-1" for="machine_controls_0_dir_parent">Positive</label>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Direction 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Direction" 
+                                            data-bs-content="The direction of Disk 2 (small) rotation in Left Motor">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center ps-3">
+                                        <div>
+                                            <label class="form-check-label me-2 text-muted" for="machine_controls_0_dir_child">Negative</label>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input machine_controls_0_dir_child" value="1" type="checkbox" id="machine_controls_0_dir_child">
+                                                <label class="form-check-label ms-1" for="machine_controls_0_dir_child">Positive</label>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Move 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Move" 
+                                            data-bs-content="The position of the Left Motor horizontally relative to screen and Right Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_move" min="0" max="40" step="1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_move_value"></span>%</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Angle 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Angle" 
+                                            data-bs-content="Initial angle of Disk 1 (large) in Left Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_rotate_parent" min="0" max="360" step="1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_rotate_parent_value"></span>&deg;</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Angle 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Angle" 
+                                            data-bs-content="Initial angle of Disk 2 (small) in Left Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_rotate_child" min="0" max="360" step="1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_rotate_child_value"></span>&deg;</div>
+                                </td>
+                            </tr>
+                            <tr title="SPR = Seconds to make a rotation">
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Speed 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Speed" 
+                                            data-bs-content="How many seconds it takes to make a rotation for Disk 1 (large) in Left Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_speed_parent" min="0" max="300" step=".10">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_speed_parent_value"></span> <small>SPR</small></div>
+                                </td>
+                            </tr>
+                            <tr title="SPR = Seconds to make a rotation">
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Speed 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Speed" 
+                                            data-bs-content="How many seconds it takes to make a rotation for Disk 2 (small) in Left Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_speed_child" min="0" max="300" step=".10">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_speed_child_value"></span> <small>SPR</small></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Size
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Size" 
+                                            data-bs-content="The size of Disk 1 (large) in Left Motor relative to screen width.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_size_parent" min="5" max="30" step=".5">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_size_parent_value"></span>%</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Size 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Size" 
+                                            data-bs-content="The size of Disk 2 (small) in Left Motor relative to Disk 1 (large).">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_0_size_child" min="20" max="80" step=".5">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_0_size_child_value"></span>%</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="setting-options middle-options d-flex flex-column justify-content-end gap-1 flex-none">
+                    <div class="d-flex flex-column invisible_when_drawing invisible_if_show_drawing_only">
+                        <table class="table m-0 table-sm table-borderless align-middle">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="setting-label">
+                                            Arm length 
+                                            <a 
+                                                tabindex="0" 
+                                                class="info-btn" 
+                                                role="button" 
+                                                data-bs-toggle="popover" 
+                                                data-bs-trigger="focus" 
+                                                title="Arm Length" 
+                                                data-bs-content="Length of the Arm starts from Disk 2 (small) in both Motors. Its relative to screen and there is a minimum requirement of this length, it won't go less than that.">
+                                                <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-input">
+                                            <input type="range" class="setting-input-range form-range machine_controls_hand_arm_length" min="5" max="100" step="1">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-value"><span class="machine_controls_hand_arm_length_value"></span>%</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="setting-label">
+                                            Forearm length 
+                                            <a 
+                                                tabindex="0" 
+                                                class="info-btn" 
+                                                role="button" 
+                                                data-bs-toggle="popover" 
+                                                data-bs-trigger="focus" 
+                                                title="Forearm Length" 
+                                                data-bs-content="Length of the Forearm, starts from where both Arms connect. Its relative to Arm's length.">
+                                                <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-input">
+                                            <input type="range" class="setting-input-range form-range machine_controls_hand_forearm_length" min="10" max="50" step="1">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-value"><span class="machine_controls_hand_forearm_length_value"></span>%</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="setting-label">
+                                            Palm length 
+                                            <a 
+                                                tabindex="0" 
+                                                class="info-btn" 
+                                                role="button" 
+                                                data-bs-toggle="popover" 
+                                                data-bs-trigger="focus" 
+                                                title="Palm Length" 
+                                                data-bs-content="Length of the Palm starts from both Forearms and connects each other. Its relative to Forearm's length.">
+                                                <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-input">
+                                            <input type="range" class="setting-input-range form-range machine_controls_hand_palm_length" min="100" max="130" step="1">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-value"><span class="machine_controls_hand_palm_length_value"></span>%</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="setting-label">
+                                            Accuracy 
+                                            <a 
+                                                tabindex="0" 
+                                                class="info-btn" 
+                                                role="button" 
+                                                data-bs-toggle="popover" 
+                                                data-bs-trigger="focus" 
+                                                title="Accuracy" 
+                                                data-bs-content="The fractional part of the Degree, each time it rotates. The more it is, the longer it takes to repeat the drawing, and the more random the outcome.">
+                                                <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-input">
+                                            <input type="range" class="setting-input-range form-range machine_controls_accuracy" min="0" max="8" step="1">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-value"><span class="machine_controls_accuracy_value"></span></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="setting-label">
+                                            Opacity 
+                                            <a 
+                                                tabindex="0" 
+                                                class="info-btn" 
+                                                role="button" 
+                                                data-bs-toggle="popover" 
+                                                data-bs-trigger="focus" 
+                                                title="Opacity" 
+                                                data-bs-content="The transparency of the colors.">
+                                                <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-input">
+                                            <input type="range" class="setting-input-range form-range machine_controls_opacity" min=".1" max="1" step=".1">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="setting-value"><span class="machine_controls_opacity_value"></span></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-1">
+                        <div class="color-input-con hide_when_drawing hide_if_show_drawing_only">
+                            <input type="color" class="form-control form-control-sm form-control-color setting-color machine_controls_0_color" value="#000000" title="Choose your color">
+                        </div>
+                        <a href="#" class="btn btn-sm btn-info setting-control-btn machine_controls_save hide_when_drawing hide_if_show_drawing_only">Download</a>
+                        <a href="#" class="btn btn-sm btn-success setting-control-btn machine_controls_play hide_when_drawing hide_if_show_drawing_only">Draw</a>
+                        <a href="#" class="btn btn-sm btn-warning setting-control-btn machine_controls_pause show_when_drawing">Pause</a>
+                        <a href="#" class="btn btn-sm btn-danger setting-control-btn machine_controls_clear hide_when_drawing hide_if_show_drawing_only">Clear</a>
+                        <div class="color-input-con hide_when_drawing hide_if_show_drawing_only">
+                            <input type="color" class="form-control  form-control-sm form-control-color setting-color machine_controls_1_color" value="#000000" title="Choose your color">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-1">
+                        <a href="#" class="btn btn-sm btn-primary setting-control-btn machine_controls_show_config hide_when_drawing hide_if_show_drawing_only">Config</a>
+                        <a href="#" class="btn btn-sm btn-primary setting-control-btn machine_controls_show_drawing_only hide_if_show_drawing_only">Show Drawing Only</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#preset_modal" class="btn btn-sm btn-warning fw-bold setting-control-btn machine_controls_preset_modal hide_when_drawing hide_if_show_drawing_only">Presets</a>
+                        <a href="#" class="btn btn-sm btn-info setting-control-btn machine_controls_show_everything show_if_show_drawing_only">Show Everything</a>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="contact"><a href="mailto:jamshedhossan9@gmail.com">jamshedhossan9@gmail.com</a></div>
+                    </div>
+                    
+                </div>
+                <div class="setting-options right-options d-flex flex-column gap-2 flex-grow-1- invisible_when_drawing invisible_if_show_drawing_only">
+                    <table class="table m-0 table-sm table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="setting-label"><strong>Right Motor</strong></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-end pe-3 py-1">
+                                        <div>
+                                            <label class="form-check-label me-2 text-muted" for="machine_controls_1_dir_parent">Negative</label>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input machine_controls_1_dir_parent" value="1" type="checkbox" id="machine_controls_1_dir_parent">
+                                                <label class="form-check-label ms-1" for="machine_controls_1_dir_parent">Positive</label>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Direction 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Direction" 
+                                            data-bs-content="The direction of Disk 1 (large) rotation in Right Motor">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="d-flex align-items-center  justify-content-end pe-3">
+                                        <div>
+                                            <label class="form-check-label me-2 text-muted" for="machine_controls_1_dir_child">Negative</label>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input machine_controls_1_dir_child" value="1" type="checkbox" id="machine_controls_1_dir_child">
+                                                <label class="form-check-label ms-1" for="machine_controls_1_dir_child">Positive</label>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Direction 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Direction" 
+                                            data-bs-content="The direction of Disk 2 (small) rotation in Right Motor">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_move_value"></span>%</div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_move" min="0" max="40" step="1" style="direction: rtl">
+                                    </div>
+                                </td>
+                                
+                                <td>
+                                    <div class="setting-label">
+                                        Move 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Move" 
+                                            data-bs-content="The position of the Right Motor horizontally relative to screen and Left Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_rotate_parent_value"></span>&deg;</div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_rotate_parent" min="0" max="360" step="1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Angle 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Angle" 
+                                            data-bs-content="Initial angle of Disk 1 (large) in Right Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_rotate_child_value"></span>&deg;</div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_rotate_child" min="0" max="360" step="1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Angle 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Angle" 
+                                            data-bs-content="Initial angle of Disk 2 (small) in Right Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr title="SPR = Seconds to make a rotatation">
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_speed_parent_value"></span> <small>SPR</small></div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_speed_parent" min="0" max="300" step=".10">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Speed 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Speed" 
+                                            data-bs-content="How many seconds it takes to make a rotation for Disk 1 (large) in Right Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr title="SPR = Seconds to make a rotatation">
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_speed_child_value"></span> <small>SPR</small></div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_speed_child" min="0" max="300" step=".10">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Speed 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Speed" 
+                                            data-bs-content="How many seconds it takes to make a rotation for Disk 2 (small) in Right Motor.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_size_parent_value"></span>%</div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_size_parent" min="5" max="30" step=".5">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 1 Size
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 1 Size" 
+                                            data-bs-content="The size of Disk 1 (large) in Right Motor relative to screen width.">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="setting-value"><span class="machine_controls_1_size_child_value"></span>%</div>
+                                </td>
+                                <td>
+                                    <div class="setting-input">
+                                        <input type="range" class="setting-input-range form-range machine_controls_1_size_child" min="20" max="80" step=".5">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="setting-label">
+                                        Disk 2 Size 
+                                        <a 
+                                            tabindex="0" 
+                                            class="info-btn" 
+                                            role="button" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="focus" 
+                                            title="Disk 2 Size" 
+                                            data-bs-content="The size of Disk 2 (small) in Right Motor relative to Disk 1 (large).">
+                                            <img src="./assets/icons/info-circle.svg" alt="" class="info-icon">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+    	</div>
+		
+        <a id="canvasimg" style="position:absolute;top:10%;left:52%;display:none;" download>Download</a>
+
+        <div class="modal fade" id="preset_modal" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen">
+              <div class="modal-content">
+                <div class="modal-header py-2">
+                  <h6 class="modal-title">Presets</h6>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 justify-content-center preset_drawings_container">
+                        <div class="col-12 col-xs-6 col-md-4 col-lg-3 col-xl-2">
+                            <img class="w-100" src="./assets/presets/preset1.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer py-1">
+                    <div class="d-flex w-100 align-items-center">
+                        <div class="flex-grow-1 text-primary">
+                            Click "Draw" after selecting a Preset drawing. You can make any necessary changes to the inputs before using "Draw".
+                        </div>
+                        <div class="flex-none">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </body>
+</html>

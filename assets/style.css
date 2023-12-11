@@ -1,0 +1,444 @@
+
+/*
+    "Harmonograph" is a Javascript written project that simulates drawing of a harmonograph. It generates geometric drawings based on inputs.
+    
+    Copyright (C) 2023 - Jamshed Hossan
+
+    This program is free software: you can redistribute it and/or modify it under the terms 
+    of the GNU General Public License as published by the Free Software Foundation, 
+    either version 3 of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+    PURPOSE. See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with this program. 
+    If not, see https://www.gnu.org/licenses/.
+*/
+
+*{
+    box-sizing: border-box;
+    /* box-shadow: 0px 0px 1px rgba(0,0,0,1) !important; */
+    /* border-radius: 0px !important; */
+}
+body{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* (e.g., Courier) */
+    font-size: 12px;
+    /*background: #ebe8f1;*/
+    
+}
+.table{
+    font-size: 100%;
+}
+.form-check{
+    min-height: auto;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 25rem;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background-color: #ced7d9;
+    border-radius: 0.5rem;
+    height: 0.3rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    margin-top: -2.4px; 
+    background-color: #1a66e0;
+    border-radius: 0.5rem;
+    height: 0.6rem;
+    width: 0.6rem;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+    background-color: #1a66e0;
+    outline: 3px solid #598fe6;
+    outline-offset: 0.125rem;
+}
+
+input[type="range"]::-moz-range-track {
+    background-color: #ced7d9;
+    border-radius: 0.5rem;
+    height: 0.3rem;
+}
+
+input[type="range"]::-moz-range-thumb {
+    background-color: #1a66e0;
+    border: none; 
+    border-radius: 0.5rem;
+    height: 0.6rem;
+    width: 0.6rem;
+}
+
+input[type="range"]:focus::-moz-range-thumb{
+    background-color: #1a66e0;
+    outline: 3px solid #598fe6;
+    outline-offset: 0.125rem;
+}
+
+.board{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:  100%;
+    /*border: 1px solid red;*/
+}
+.canvas{
+    position:  absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.machine{
+    position:  absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+}
+.machine-gear-container{
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+}
+.machine-gear-con{
+    position: absolute;
+    top:0;
+}
+.machine-gear-parent{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: #9191ca;
+	box-shadow: 0px 0px 4px 4px rgba(0,0,0,.15);
+}
+.machine-gear-child-con{
+    position: absolute;
+    top:12%;
+    left:12%;
+}
+.machine-gear-child{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: #91beca;
+	box-shadow: 0px 0px 4px 4px rgba(0,0,0,.15);
+}
+.machine_gear_handle_con{
+    position: absolute;
+    top: 18%;
+    left: 18%;
+    width: 7px;
+    height: 7px;
+    background: #000;
+    border-radius: 10px;
+}
+.machine_gear_handle{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.machine-gear-parent{
+    background-image: url('./icons/star.svg');
+    background-size: 100% 100%;
+    border-radius: 100%;
+}
+.machine-gear-child{
+    background-image: url('./icons/star.svg');
+    background-size: 100% 100%;
+    border-radius: 100%;
+}
+
+.machine_hand_arm,
+.machine_hand_arm_bridge,
+.machine_hand_palm,
+.machine_hand_palm_bridge{
+    position: fixed;
+    min-height: 1px;
+}
+.machine_hand_arm_bridge_column,
+.machine_hand_palm_bridge_column{
+    position: absolute;
+    top:0;
+    left:50%;
+    transform: translateX(-50%);
+
+}
+.machine_hand_arm_bridge_column_tip,
+.machine_hand_palm_bridge_column_tip{
+    position: absolute;
+    bottom:0;
+    left:50%;
+    transform: translateX(-50%);
+}
+.machine_hand_forearm_tip{
+    position: absolute;
+    left:100%;
+    top:0;
+}
+.machine_hand_forearm{
+    position: absolute;
+    left: 100%;
+    top:0;
+    min-height: 1px;
+}
+.machine_hand_arm_display{
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+}
+.machine_hand_arm_display:after,
+.machine_hand_palm:after
+{
+    content: "";
+    position: absolute;
+    left: -8px;
+    right: -8px;
+    top: -2px;
+    bottom: -2px;
+    border-radius: 20px;
+    background: #98b9d8;
+    box-shadow: 1px -1px 3px 2px rgba(0,0,0,.1);
+    opacity: .7;
+}
+
+.machine_hand_arm_bridge_column_tip:after,
+.machine_hand_forearm_tip:after, 
+.machine_hand_palm_bridge_column_tip:after{
+    content: "";
+    position: absolute;
+    top:-1px;
+    bottom:-1px;
+    left: -1px;
+    right: -1px;
+    background: rgba(0,0,0,.3);
+    border-radius: 10px;
+}
+.machine_hand_forearm_tip:after{
+    background: rgba(0,0,0,1);
+}
+@media(min-width:768px){
+    .machine_hand_arm_display:after,
+    .machine_hand_palm:after
+    {
+        left: -10px;
+        right: -10px;
+        top: -3px;
+        bottom: -3px;
+    }
+
+    .machine_hand_arm_bridge_column_tip:after,
+    .machine_hand_forearm_tip:after, 
+    .machine_hand_palm_bridge_column_tip:after{
+        top:-1.5px;
+        bottom:-1.5px;
+        left: -1.5px;
+        right: -1.5px;
+    }
+}
+@media(min-width:1024px){
+    .machine_hand_arm_display:after,
+    .machine_hand_palm:after
+    {
+        left: -15px;
+        right: -15px;
+        top: -7px;
+        bottom: -7px;
+    }
+
+    .machine_hand_arm_bridge_column_tip:after,
+    .machine_hand_forearm_tip:after, 
+    .machine_hand_palm_bridge_column_tip:after{
+        top:-3px;
+        bottom:-3px;
+        left: -3px;
+        right: -3px;
+    }
+}
+
+.form-control-color{
+    min-width: 45px;
+}
+.settings{
+    position: fixed;
+    bottom: 0;
+    left:0;
+    right:0;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+.board:not(.drawing) .settings{
+    max-height: 90vh;
+    overflow: auto;
+}
+.setting-input-range {
+    width: 100% !important;
+    height: 1rem;
+}
+.settings>.left-options,
+.settings>.right-options{
+    flex-grow:1;
+}
+.settings>.left-options .table .setting-label{
+    text-align: right;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.settings>.left-options .table .setting-value{
+    text-align: left;
+}
+.settings>.right-options .table .setting-label{
+    text-align: left;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.settings>.right-options .table .setting-value{
+    text-align: right;
+}
+.settings>.middle-options .table .setting-label{
+    text-align: left;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.setting-color{
+    padding: 2px;
+    min-height: auto;
+    line-height: 1;
+    font-size: 80%;
+}
+.setting-control-btn{
+    padding-top: .1rem;
+    padding-bottom: .12rem;
+    font-size: 95%;
+}
+
+.settings .table th,
+.settings .table td
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.board.drawing .settings .invisible_when_drawing,
+.board:not(.drawing) .settings .visible_when_drawing
+{
+    opacity: 0;
+    visibility: hidden;
+}
+.board.drawing .settings .hide_when_drawing,
+.board:not(.drawing) .settings .show_when_drawing
+{
+    display: none;
+}
+
+.board.show_drawing_only .invisible_if_show_drawing_only{
+    opacity: 0;
+    visibility: hidden;
+}
+
+.board.show_drawing_only .hide_if_show_drawing_only,
+.board:not(.show_drawing_only) .show_if_show_drawing_only{
+    display: none;
+}
+
+.preset_element{
+    display: block;
+    border: 1px solid #d9e2e9;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s ease;
+    background: rgb(255,255,266);
+    background: radial-gradient(circle, rgba(242,248,249,0.3) 0%, rgba(95,139,173,0.2) 100%);
+    box-shadow: 0px 0px 0px rgba(0,0,0,0);
+}
+.preset_element:hover{
+    transform: translateY(-2px);
+    box-shadow: 0px 5px 5px rgba(0,0,0,.2);
+}
+.info-btn{
+    opacity: .7;
+}
+.info-btn:hover{
+    opacity: 1;
+}
+.info-btn .info-icon{
+    width: 13px;
+    height: 13px;
+}
+.machine_controls_show_config{
+    display: none;
+}
+@media(max-width: 1023px){
+    .board.show-config:not(.drawing) .settings{
+        box-shadow: 0px 0px 40px rgba(0,0,0,.3);
+        background: rgba(255,255,255,.9);
+    }
+    .board:not(.show-config) .machine_controls_show_config{
+        display: inline-block;
+    }
+    .board:not(.show-config) .settings .table{
+        display: none;
+    }
+    
+    .settings>.setting-options{
+        flex-grow: 1;
+        width: 100%;
+    }
+    .settings>.left-options{
+        order: 1;
+    }
+    .settings>.right-options{
+        order: 2;
+    }
+    .settings>.middle-options{
+        order: 3;
+    }
+}
+.contact{
+    width: 100%;
+    text-align: center;
+    /* padding: 10px 10px 0px 10px; */
+}
+.contact a{
+    color: #253b4d;
+    font-size: 95%;
+    /* letter-spacing: 1px; */
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding: 1px 5px;
+}
+.contact a:hover{
+    border-bottom: 1px solid #253b4d;
+}
