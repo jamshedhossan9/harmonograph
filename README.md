@@ -5,7 +5,7 @@ A Javascript written tool to draw geometric images like Harmonograph.
 
 This project simulates a harmonograph, one of the various types available. To generate drawings, users can specify their own settings. Users can see a few preset samples that are being emulated. Prior to drawing, they have the ability to alter the inputs of preset designs. The browser will cache the last configuration that was used.
 
-The script is written in Vanillajs. For basic UI I ised [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) and few icons from [SvgRepo](https://www.svgrepo.com/);
+The script is written in Vanillajs. For basic UI, I used [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) and few icons from [SvgRepo](https://www.svgrepo.com/);
 
 Larger screens provide the greatest experience.
 
