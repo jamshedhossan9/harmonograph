@@ -33,8 +33,8 @@ board = {
 },
 canvas = {
     el: null,
-    scale: 4,
-    strokeWidth: 4,
+    scale: 1,
+    strokeWidth: 1,
     accuracy: 2,
     context: null,
     size: {
@@ -945,7 +945,7 @@ function checkCurrentPosition(){
     let gear0childDeg = machine.gear[0].child.deg;
     let gear1parentDeg = machine.gear[1].parent.deg;
     let gear1childDeg = machine.gear[1].child.deg;
-    console.log(gear0parentDeg, gear0childDeg, gear1parentDeg, gear1childDeg)
+    // console.log(gear0parentDeg, gear0childDeg, gear1parentDeg, gear1childDeg)
     if(
         gear0parentDeg == canvas.startDeg[0].parent &&
         gear0childDeg == canvas.startDeg[0].child && 
@@ -983,6 +983,7 @@ function stop(){
 
 function draw() {
     // console.log('draw');
+    // console.log((new Date()).getTime())
     canvas.context.beginPath();
     canvas.context.moveTo((canvas.penPos.oldx - canvas.pos.x) * canvas.scale, (canvas.penPos.oldy - canvas.pos.y) * canvas.scale);
     canvas.context.lineTo((canvas.penPos.x - canvas.pos.x) * canvas.scale, (canvas.penPos.y - canvas.pos.y) * canvas.scale);
