@@ -32,3 +32,6 @@ Larger screens provide the greatest experience.
 <p align="center">
     <img src="https://github.com/jamshedhossan9/harmonograph/blob/main/screenshots/ss-7.png?raw=true" width="500" >
 </p>
+<p align="center">
+    <img src="https://github.com/jamshedhossan9/harmonograph/blob/main/screenshots/ss-8.png?raw=true" width="500" >
+</p>
