@@ -417,6 +417,7 @@ input[type="range"]:focus::-moz-range-thumb{
     .board.drawing .settings .middle-options-btns{
         flex-direction: row;
         justify-content: center;
+        flex-wrap: wrap;
     }
     
     .settings>.setting-options{
